@@ -6,7 +6,7 @@ def casino(balance):
   print("Welcome to the Casino!")
   print(f"You have ${balance} balance")
   print(
-      "Choose from these options to play: \n 1:Death's Crown \n 2:Blackjack(WIP) \n 3:7-12 Dice \n 4:Roulette \n 5:Buy more balance \n 6:Exit the program"
+      "Choose from these options to play: \n 1:Death's Crown \n 2:Dice Blackjack \n 3:7-12 Dice \n 4:Roulette \n 5:Buy more balance \n 6:Exit the program"
   )
   choice = int(input("Input the number of the game you wish to play: "))
   if (choice == 1):
@@ -100,6 +100,116 @@ def deathscrown(balance):
 
 def blackjack(balance):
   print("\n=============================\n")
+  print(
+      "Welcome to Dice Blackjack \n The rules are simple, you are trying to get the closest to 21 you can without going over. You start off with 2 dice of 1-10. \n Each turn you can choose to roll another or stand. \n Also if you have a 1 rolled that can be substituted as an 11 depending on what you have. \n Good Luck! \n"
+  )
+  if (input("Do you wish to play?(y/n)") == "y"):
+    print("How much would you like to bet?")
+    bet = int(input("Input your bet: "))
+    if (bet > balance):
+      print("You don't have enough money to bet that much.")
+    else:
+      print(f"You have bet ${bet}")
+      print("--------------------------------------------------------")
+      dealer_cards = [random.randint(1, 10), random.randint(1, 10)]
+      player_cards = [random.randint(1, 10), random.randint(1, 10)]
+      playerace = False
+      gambling = True
+      if ((player_cards[0] == 1 or player_cards[1] == 1)
+          and (player_cards[0] == 10 or player_cards[1] == 10)):
+        if ((dealer_cards[0] == 1 or dealer_cards[1] == 1)
+            and (dealer_cards[0] == 10 or dealer_cards[1] == 10)):
+          print("Both players have Blackjack, you tie!")
+          print(f"Your current balance is ${balance}")
+          if (input("Would you like to play again? (y/n):") == "y"):
+            blackjack(balance)
+          else:
+            return balance
+        else:
+          print("Blackjack!")
+          balance += (bet * 1.5)
+          print(f"Your current balance is ${balance}")
+          if (input("Would you like to play again? (y/n):") == "y"):
+            blackjack(balance)
+          else:
+            return balance
+
+      while (gambling):
+        for i in range(len(player_cards)):
+          if (player_cards[i] == 1):
+            playerace = True
+        if (playerace):
+          player_total = (sum(player_cards) + 10)
+          if (player_total > 21):
+            player_total -= 10
+        else:
+          player_total = sum(player_cards)
+
+        if (player_total > 21):
+          print("You busted!")
+          balance -= bet
+          print(f"Your current balance is ${balance}")
+          if (input("Would you like to play again? (y/n):") == "y"):
+            blackjack(balance)
+          return balance
+
+        print("--------------------------------------------------------")
+        print(f"Dealer Cards: {dealer_cards[0]}")
+        print(f"Player Cards: {player_cards} \nPlayer Total: {player_total}")
+        print("--------------------------------------------------------")
+        print("What would you like to do? \n 1:Roll \n 2:Stand")
+        choice = int(input("Input your choice: "))
+        if (choice == 1):
+          player_cards.append(random.randint(1, 10))
+        else:
+          gambling = False
+
+      dealerace = False
+      for i in range(len(dealer_cards)):
+        if (dealer_cards[i] == 1):
+          dealerace = True
+      if (dealerace):
+        dealertotal = (sum(dealer_cards) + 10)
+        if (dealertotal > 21):
+          dealertotal -= 10
+      else:
+        dealertotal = sum(dealer_cards)
+
+      dealertotal = sum(dealer_cards)
+
+      while dealertotal < 17:
+
+        print(f"Dealer Cards: {dealer_cards}")
+        print(f"Dealer Total: {dealertotal}")
+        print("Hitting...")
+        dealer_cards.append(random.randint(1, 10))
+        dealertotal = sum(dealer_cards)
+        for i in range(len(dealer_cards)):
+          if (dealer_cards[i] == 1):
+            dealerace = True
+        if (dealerace):
+          dealertotal = (sum(dealer_cards) + 10)
+          if (dealertotal > 21):
+            dealertotal -= 10
+        else:
+          dealertotal = sum(dealer_cards)
+
+        dealertotal = sum(dealer_cards)
+
+      print(f"User Hand is {player_cards} and total is {player_total}")
+      print(f"Dealer Hand is {dealer_cards} and total is {dealertotal}")
+      if (player_total > dealertotal):
+        print("You won!")
+        balance += bet
+      elif (dealertotal > player_total):
+        print("You lost!")
+        balance -= bet
+      else:
+        print("You tied!")
+
+  print(f"Your current balance is ${balance}")
+  if (input("Would you like to play again? (y/n):") == "y"):
+    blackjack(balance)
   return balance
 
 
