@@ -6,7 +6,7 @@ def casino(balance):
   print("Welcome to the Casino!")
   print(f"You have ${balance} balance")
   print(
-      "Choose from these options to play: \n 1:Death's Crown \n 2:Blackjack(WIP) \n 3:Undefined(WIP) \n 4:Roulette \n 5:Buy more balance \n 6:Exit the program"
+      "Choose from these options to play: \n 1:Death's Crown \n 2:Blackjack(WIP) \n 3:7-12 Dice \n 4:Roulette \n 5:Buy more balance \n 6:Exit the program"
   )
   choice = int(input("Input the number of the game you wish to play: "))
   if (choice == 1):
@@ -16,7 +16,7 @@ def casino(balance):
     balance = blackjack(balance)
     casino(balance)
   elif (choice == 3):
-    balance = blank(balance)
+    balance = dice712(balance)
     casino(balance)
   elif (choice == 4):
     balance = basicroulette(balance)
@@ -97,14 +97,61 @@ def deathscrown(balance):
   else:
     return balance
 
+
 def blackjack(balance):
   print("\n=============================\n")
   return balance
 
 
-def blank(balance):
+def dice712(balance):
   print("\n=============================\n")
-  
+  print(
+      "Welcome 7-12 Dice, rules are really simple. You buy in for 50$ and roll 2 dice, if the dice add up to 7 or 12 you win. If you want to you can double down your bet to add another die."
+  )
+  if (input("Ready to play? (y/n): ") == "y"):
+    if (balance < 50):
+      print("You don't have enough money to play.")
+      return balance
+    dice1 = random.randint(1, 6)
+    dice2 = random.randint(1, 6)
+    sum = dice1 + dice2
+    print(f"You rolled {dice1} and {dice2}. Which add to {sum}")
+    if (sum == 7 or sum == 12):
+      print("You win!")
+      balance += 50
+      print(f"Your current balance is ${balance}")
+      if (input("Would you like to play again? (y/n): ") == "y"):
+        dice712(balance)
+      else:
+        return balance
+    else:
+      if (input("Would you like to double down to roll another die? (y/n)\n: ")
+          == "y"):
+        if (balance < 100):
+          print("You do not have enough money to double down.")
+          return balance
+        dice3 = random.randint(1, 6)
+        sum2 = sum + dice3
+        print(f"You rolled {dice3}. Which add to {sum2}")
+        if (sum2 == 7 or sum2 == 12):
+          print("You win!")
+          balance += 100
+        else:
+          print("You lost!")
+          balance -= 100
+        print(f"Your current balance is ${balance}")
+        if (input("Would you like to play again? (y/n): ") == "y"):
+          dice712(balance)
+        else:
+          return balance
+      else:
+        print("You lost!")
+        balance -= 50
+        print(f"Your current balance is ${balance}")
+        if (input("Would you like to play again? (y/n): ") == "y"):
+          dice712(balance)
+        else:
+          return balance
   return balance
 
 
@@ -114,7 +161,9 @@ def basicroulette(balance):
   number = 0
   choice = "none"
   print("\n=============================\n")
-  print("Welcome to Roulette. The rules are simple, a number between 0 and 36 will be chosen at randomly.\nYou can bet on these categories \n1:Specific number between 0-36 \n2:Even or odd \n3:Red or black \n4:12 number ranges")
+  print(
+      "Welcome to Roulette. The rules are simple, a number between 0 and 36 will be chosen at randomly.\nYou can bet on these categories \n1:Specific number between 0-36 \n2:Even or odd \n3:Red or black \n4:12 number ranges"
+  )
   answer = int(input("Which type of bet would you like to do?: "))
   print("----------------------------------------------------------")
   if (answer == 1):
@@ -126,9 +175,9 @@ def basicroulette(balance):
     else:
       print(f"You have bet ${bet}")
       number = int(input("What number would you like to bet on?: "))
-      if (number > 36 or number <0):
+      if (number > 36 or number < 0):
         print("That number is not between 0 and 36")
-  elif(answer == 2):
+  elif (answer == 2):
     type = "E/O"
     print("You have chosen to bet on even or odd.")
     bet = int(input("How much would you like to bet?: "))
@@ -136,14 +185,17 @@ def basicroulette(balance):
       print("You don't have enough money to bet that much.")
     else:
       print(f"You have bet ${bet}")
-      choice = int(input("Would you like to bet on even or odd?: \n 1:Even \n 2:Odd \n: "))
+      choice = int(
+          input(
+              "Would you like to bet on even or odd?: \n 1:Even \n 2:Odd \n: ")
+      )
       if (choice == 1):
         choice = "even"
       elif (choice == 2):
         choice = "odd"
       else:
         print("That is not a valid choice.")
-  elif(answer == 3):
+  elif (answer == 3):
     type = "R/B"
     print("You have chosen to bet on red or black.")
     bet = int(input("How much would you like to bet?: "))
@@ -151,14 +203,17 @@ def basicroulette(balance):
       print("You don't have enough money to bet that much.")
     else:
       print(f"You have bet ${bet}")
-      choice = int(input("Would you like to bet on red or black?: \n 1:Red \n 2:Black \n: "))
+      choice = int(
+          input(
+              "Would you like to bet on red or black?: \n 1:Red \n 2:Black \n: "
+          ))
       if (choice == 1):
         choice = "red"
       elif (choice == 2):
         choice = "black"
       else:
         print("That is not a valid choice.")
-  elif(answer == 4):
+  elif (answer == 4):
     type = "Range"
     print("You have chosen to bet on 12 number ranges.")
     bet = int(input("How much would you like to bet?: "))
@@ -166,7 +221,10 @@ def basicroulette(balance):
       print("You don't have enough money to bet that much.")
     else:
       print(f"You have bet ${bet}")
-      choice = int(input("Would you like to bet on ranges of numbers?: \n 1:1-12 \n 2:13-24 \n 3:25-36"))
+      choice = int(
+          input(
+              "Would you like to bet on ranges of numbers?: \n 1:1-12 \n 2:13-24 \n 3:25-36"
+          ))
       if (choice == 1):
         choice = "R1"
       elif (choice == 2):
@@ -179,10 +237,10 @@ def basicroulette(balance):
     print("That is not a valid choice.")
   print("----------------------------------------------------------")
   print("Spinning the wheel...")
-  roll = random.randint(0,36)
+  roll = random.randint(0, 36)
   print(f"The wheel landed on {roll}")
-  if(type == "Number"):
-    if(roll == number):
+  if (type == "Number"):
+    if (roll == number):
       profit = bet * 35
       print(f"You won ${profit}!")
       balance += profit
@@ -190,12 +248,12 @@ def basicroulette(balance):
     else:
       print("You lost!")
       balance -= bet
-  elif(type == "E/O"):
-    if(roll % 2 == 0 and choice == "even"):
+  elif (type == "E/O"):
+    if (roll % 2 == 0 and choice == "even"):
       print(f"You won ${bet}!")
       balance += bet
       print(f"You now have ${balance} dollars.")
-    elif((roll % 2 == 1) and choice == "odd"):
+    elif ((roll % 2 == 1) and choice == "odd"):
       print(f"You won ${bet}!")
       balance += bet
       print(f"You now have ${balance} dollars.")
@@ -203,46 +261,47 @@ def basicroulette(balance):
       print("You lost!")
       balance -= bet
       print(f"You now have ${balance} dollars.")
-  elif(type == "R/B"):
+  elif (type == "R/B"):
     rollcolor = "none"
     reds = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
-    blacks = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35]
+    blacks = [
+        2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35
+    ]
     for i in range(18):
-      if(roll == reds[i]):
+      if (roll == reds[i]):
         rollcolor = "red"
-      elif(roll == blacks[i]):
+      elif (roll == blacks[i]):
         rollcolor = "black"
-    
-    if(choice == rollcolor):
-      print(f"You won ${bet}!")
-      balance += bet
-      print(f"You now have ${balance} dollars.")
-    else:
-      print("You lost!")
-      balance -= bet
-      print(f"You now have ${balance} dollars.")
-  elif(type == "Range"):
-    if(roll >= 1 and roll <= 12 and choice == "R1"):
-      print(f"You won ${bet}!")
-      balance += bet
-      print(f"You now have ${balance} dollars.")
-    elif(roll >= 13 and roll <= 24 and choice == "R2"):
-      print(f"You won ${bet}!")
-      balance += bet
-      print(f"You now have ${balance} dollars.")
-    elif(roll >= 25 and roll <= 36 and choice == "R3"):
-      print(f"You won ${bet}!")
-      balance += bet
-      print(f"You now have ${balance} dollars.")
-    else:
-      print("You lost!")
-      balance -= bet
-      print(f"You now have ${balance} dollars.")
-  
 
-  if(input("Would you like to play again? (y/n): ") == "y"):
+    if (choice == rollcolor):
+      print(f"You won ${bet}!")
+      balance += bet
+      print(f"You now have ${balance} dollars.")
+    else:
+      print("You lost!")
+      balance -= bet
+      print(f"You now have ${balance} dollars.")
+  elif (type == "Range"):
+    if (roll >= 1 and roll <= 12 and choice == "R1"):
+      print(f"You won ${bet}!")
+      balance += bet
+      print(f"You now have ${balance} dollars.")
+    elif (roll >= 13 and roll <= 24 and choice == "R2"):
+      print(f"You won ${bet}!")
+      balance += bet
+      print(f"You now have ${balance} dollars.")
+    elif (roll >= 25 and roll <= 36 and choice == "R3"):
+      print(f"You won ${bet}!")
+      balance += bet
+      print(f"You now have ${balance} dollars.")
+    else:
+      print("You lost!")
+      balance -= bet
+      print(f"You now have ${balance} dollars.")
+
+  if (input("Would you like to play again? (y/n): ") == "y"):
     basicroulette(balance)
-  
+
   return balance
 
 
