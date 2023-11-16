@@ -27,8 +27,12 @@ def casino(balance):
     casino(balance)
   elif (choice == 6):
     print("\n=============================\n")
-    print("Thanks for playing!")
-    exit()
+    print("Did you know 99% of gamblers quit right before they win big?")
+    if (input("Are you sure you want to quit? (y/n): ") == "y"):
+      print("Your loss.")
+      exit()
+    else:
+      casino(balance)
   else:
     print("\n=============================\n")
     print("Invalid Input")
